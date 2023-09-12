@@ -58,7 +58,7 @@ function selectElements(selector) {
 			if (isClass) {
 				matches = element.getElementsByClassName(selector);
 			} else {
-				matches = Array.from(element.children).filter(child => child.tagName == selector.toUpperCase());
+				matches = element.getElementsByTagName(selector);
 			}
 
 			if (arraySelector.length > 0) {
