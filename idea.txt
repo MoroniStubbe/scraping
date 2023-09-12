@@ -1,21 +1,16 @@
 make it easy to select elements
 format:
-/ to separate segments
-1 id allowed using #
-multiple classes allowed using .
-tagnames allowed
-to select an element from a list use []
-    select a single element using [2]
-    select a range of elements using [2-4]
-    select specific elements using [2, 5, 7]
-    use a combination of range and specification [2-5, 7, 9-11]
-    if there are no [], select all elements with that tag or class
-
+space to separate segments
+first selector can be:
+- id (without using a hashtag because it isn't needed),
+- unique class. unique classes can be found with uniqueClasses()
+- tagname (by default starting within html, choose head or body). to select an element from a list use tagname + index + 1 (index is 0 by default). you can also just use index without tagname.
 example:
-    '#id/.class1/.class2/div[0-3, 5, 9]/div/'
-    should find the element with id
-    then in that element find all elements with 'class1' as class
-    then in all those elements, find the elements with class2
-    then in all those elements, find the first, second, third, fourth, sixth and tenth element with tag div
-    then in all those elements, find all divs
-    finally return a list of all elements found
+    el('id div div2 1')
+    gets element by id
+    then gets first div
+    then gets second div
+    then gets first element
+
+it doesn't allow selecting multiple elements in one command.
+although it is possible to make such a function, this would make the pattern too complex, defeating the purpose.
