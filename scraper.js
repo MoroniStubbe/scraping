@@ -1,4 +1,4 @@
-function el(path) {
+function getElement(path) {
 	let element = document;
 	const segments = path.split(' ');
 	let segment = segments[0];
