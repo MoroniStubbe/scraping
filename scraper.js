@@ -2,15 +2,15 @@
 function getElement(path) {
 	let i = 0
 	let element;
-	if(typeof path[i] == 'string'){
+	if (typeof path[i] == 'string') {
 		element = document.getElementById(path[i]);
-		if(!element){
+		if (!element) {
 			element = document.getElementsByClassName(path[i])[0];
 		}
 		i++;
 	}
-	if(path.length > 1){
-		for(i; i < path.length; i++){
+	if (path.length > 1) {
+		for (i; i < path.length; i++) {
 			element = element.childNodes[path[i]];
 		}
 	}
@@ -33,10 +33,10 @@ function getUniqueClasses() {
 }
 
 //gets childNode index
-function getElementIndex(element){
+function getElementIndex(element) {
 	let childNodes = element.parentElement.childNodes;
-	for(let i = 0; i < childNodes.length; i++){
-		if(element == childNodes[i]){
+	for (let i = 0; i < childNodes.length; i++) {
+		if (element == childNodes[i]) {
 			return i;
 		}
 	}
@@ -44,32 +44,32 @@ function getElementIndex(element){
 
 function getPath(id = 'get') {
 	let element = getElement([id]);
-	if(!element){
+	if (!element) {
 		return;
 	}
 	let path = [];
 	const uniqueClasses = getUniqueClasses();
 	let done = false;
-	while(!done){
-		if(element.classList.length > 0){
-			for(let i = 0; i < element.classList.length; i++){
-				if(uniqueClasses.includes(element.classList[i])){
+	while (!done) {
+		if (element.classList.length > 0) {
+			for (let i = 0; i < element.classList.length; i++) {
+				if (uniqueClasses.includes(element.classList[i])) {
 					path.push(element.classList[i]);
 					done = true;
 					break;
 				}
 			}
 		}
-		if(done){
+		if (done) {
 			break;
 		}
-		else{
+		else {
 			path.push(getElementIndex(element));
 		}
-		if(element.parentElement == document){
+		if (element.parentElement == document) {
 			break;
 		}
-		if(element.parentElement.id){
+		if (element.parentElement.id) {
 			path.push(element.parentElement.id);
 			break;
 		}
