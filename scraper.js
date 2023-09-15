@@ -34,6 +34,9 @@ function getUniqueClasses() {
 
 //gets an element's sibling index
 function getElementIndex(element) {
+	if(!element.parentElement){
+		console.log(element);
+	}
 	let childNodes = element.parentElement.childNodes;
 	for (let i = 0; i < childNodes.length; i++) {
 		if (element == childNodes[i]) {
@@ -44,8 +47,8 @@ function getElementIndex(element) {
 
 function getPath(id = 'get') {
 	let element = getElement([id]);
-	if (!element) {
-		return;
+	if (!element || element.tagName == 'HTML') {
+		return [];
 	}
 	let path = [];
 	const uniqueClasses = getUniqueClasses();
@@ -63,17 +66,15 @@ function getPath(id = 'get') {
 		if (done) {
 			break;
 		}
-		else {
-			path.push(getElementIndex(element));
-		}
-		if (element.parentElement == document) {
-			break;
-		}
+		path.push(getElementIndex(element));
 		if (element.parentElement.id) {
 			path.push(element.parentElement.id);
 			break;
 		}
 		element = element.parentElement;
+		if (element.tagName == 'HTML') {
+			break;
+		}
 	}
 	return path.reverse();
 }
