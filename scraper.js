@@ -1,31 +1,17 @@
+//path = [id or class or index, index1, index2, ...]
 function getElement(path) {
-	let element = document;
-	const segments = path.split(' ');
-	let segment = segments[0];
-	if (['head', 'body'].includes(segment)) {
-		element = document.querySelectorAll(':scope > ' + segment)[0];
+	let i = 0
+	let element;
+	if(typeof path[i] == 'string'){
+		element = document.getElementById(path[i]);
+		if(!element){
+			element = document.getElementsByClassName(path[i])[0];
+		}
+		i++;
 	}
-	else {
-		if (segment[0] == '.') {
-			element = element.getElementsByClassName(segment.slice(0, -1));
-		}
-		else {
-			element = element.getElementById(segment);
-		}
-	}
-	for (let i = 1; i < segments.length; i++) {
-		let splitSegment = segments[i].split(/(\d+)/);
-		if (splitSegment[0] == '') {
-			element = element.children[parseInt(splitSegment[1]) - 1];
-		}
-		else {
-			let elements = element.querySelectorAll(':scope > ' + splitSegment[0]);
-			if (!splitSegment[1]) {
-				element = elements[0];
-			}
-			else {
-				element = elements[parseInt(splitSegment[1]) - 1];
-			}
+	if(path.length > 1){
+		for(i; i < path.length; i++){
+			element = element.childNodes[path[i]];
 		}
 	}
 	return element;
@@ -46,44 +32,48 @@ function getUniqueClasses() {
 	return uniqueClasses;
 }
 
-function getPath(id) {
-	const uniqueClasses = getUniqueClasses();
-	let path = '';
-	let done = false;
-	let element = el(id);
-	let skipIdCheck = true;
-	while (!done) {
-		if (!skipIdCheck && element.id) {
-			path = element.id + ' ' + path;
-			break;
+//gets childNode index
+function getElementIndex(element){
+	let childNodes = element.parentElement.childNodes;
+	for(let i = 0; i < childNodes.length; i++){
+		if(element == childNodes[i]){
+			return i;
 		}
-		skipIdCheck = false;
-		let classes = element.getAttribute('class');
-		if (classes) {
-			classes = classes.split(' ');
-			for (const className of classes) {
-				if (uniqueClasses.includes(className)) {
+	}
+}
+
+function getPath(id = 'get') {
+	let element = getElement([id]);
+	if(!element){
+		return;
+	}
+	let path = [];
+	const uniqueClasses = getUniqueClasses();
+	let done = false;
+	while(!done){
+		if(element.classList.length > 0){
+			for(let i = 0; i < element.classList.length; i++){
+				if(uniqueClasses.includes(element.classList[i])){
+					path.push(element.classList[i]);
 					done = true;
-					path = '.' + className + ' ' + path;
 					break;
 				}
 			}
 		}
-		if (done) {
+		if(done){
 			break;
 		}
-		const siblings = Array.from(element.parentElement.children).filter((child) => child.tagName === element.tagName);
-		index = siblings.indexOf(element);
-		let tagName = element.tagName.toLowerCase();
-		if (index > 0) {
-			tagName += (index + 1).toString();
+		else{
+			path.push(getElementIndex(element));
 		}
-		path = tagName + ' ' + path;
+		if(element.parentElement == document){
+			break;
+		}
+		if(element.parentElement.id){
+			path.push(element.parentElement.id);
+			break;
+		}
 		element = element.parentElement;
-		if (element.tagName === 'HTML') {
-			done = true;
-		}
 	}
-	path = path.slice(0, -1);
-	return path;
+	return path.reverse();
 }

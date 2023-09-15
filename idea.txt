@@ -1,19 +1,10 @@
-make it easy to select elements
-format:
-space to separate segments
-first selector can be:
-- id (without using a hashtag because it isn't needed),
-- unique class (with .). unique classes can be found with uniqueClasses()
-- tagname (by default starting within html, choose head or body). to select an element from a list use tagname + index + 1 (index is 0 by default). you can also just use index without tagname.
+make it easy to select elements (for web scraping)
+
 example:
-    el('id div div2 1') as opposed to document.getElementById(id).getElementsByTagName('div')[0].getElementsByTagName('div')[1].children[]
-    gets element by id
-    then gets first div
-    then gets second div
-    then gets first element
+assign an id to the element you want to get the path to (default = 'get')
+then use const path = getPath('yourId') to get the path.
+now you can use getElement(path) to get the element
 
-    to do this with a unique class:
-        el('.class div div2 1')
-
+note:
 it doesn't allow selecting multiple elements in one command.
-although it is possible to make such a function, this would make the pattern too complex, defeating the purpose.
+although it is possible to make such a function, this would make the usage too complex, defeating the purpose.
