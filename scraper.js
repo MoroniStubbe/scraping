@@ -32,7 +32,7 @@ function getUniqueClasses() {
 	return uniqueClasses;
 }
 
-//gets childNode index
+//gets an element's sibling index
 function getElementIndex(element) {
 	let childNodes = element.parentElement.childNodes;
 	for (let i = 0; i < childNodes.length; i++) {
