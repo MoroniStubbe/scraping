@@ -34,9 +34,6 @@ function getUniqueClasses() {
 
 //gets an element's sibling index
 function getElementIndex(element) {
-	if(!element.parentElement){
-		console.log(element);
-	}
 	let childNodes = element.parentElement.childNodes;
 	for (let i = 0; i < childNodes.length; i++) {
 		if (element == childNodes[i]) {
