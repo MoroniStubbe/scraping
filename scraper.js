@@ -32,7 +32,41 @@ function getUniqueClasses() {
 	return uniqueClasses;
 }
 
-//gets an element's sibling index
+function getDuplicates(arr) {
+	var elementCount = {};
+	var result = [];
+
+	// Count occurrences of each element in the array
+	for (var i = 0; i < arr.length; i++) {
+		var element = arr[i];
+		if (elementCount[element] === undefined) {
+			elementCount[element] = 1;
+		} else {
+			elementCount[element]++;
+		}
+	}
+
+	// Iterate through the counts and add elements occurring more than once to the result
+	for (var key in elementCount) {
+		if (elementCount.hasOwnProperty(key) && elementCount[key] > 1) {
+			result.push(key);
+		}
+	}
+
+	return result;
+}
+
+function getDuplicateIds() {
+	let elementsWithId = document.querySelectorAll('[id]');
+	let ids = [];
+	for (let i = 1; i < elementsWithId.length; i++) {
+		ids.push(elementsWithId[i].id);
+	}
+	return getDuplicates(ids);
+}
+
+
+//gets an element's index within its parent childNodes
 function getElementIndex(element) {
 	let childNodes = element.parentElement.childNodes;
 	for (let i = 0; i < childNodes.length; i++) {
@@ -49,6 +83,7 @@ function getPath(id = 'get') {
 	}
 	let path = [];
 	const uniqueClasses = getUniqueClasses();
+	const duplicateIds = getDuplicateIds();
 	let done = false;
 	while (!done) {
 		if (element.classList.length > 0) {
@@ -64,11 +99,11 @@ function getPath(id = 'get') {
 			break;
 		}
 		path.push(getElementIndex(element));
-		if (element.parentElement.id) {
-			path.push(element.parentElement.id);
+		element = element.parentElement;
+		if (element.id && !duplicateIds.includes(element.id)) {
+			path.push(element.id);
 			break;
 		}
-		element = element.parentElement;
 		if (element.tagName == 'HTML') {
 			break;
 		}

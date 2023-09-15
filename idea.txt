@@ -21,3 +21,6 @@ note:
 it doesn't allow selecting multiple elements in one command.
 although it is possible to make such a function, this would make the usage too complex, defeating the purpose.
 a path might not work with multiple pages. in that case regex might be better.
+
+for some reason youtube uses multiple elements with the same id..
+so just for those poorly written sites i'll add a check.
