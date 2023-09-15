@@ -1,3 +1,7 @@
+useful functions:
+getPath
+getElement
+
 make it easy to select elements (for web scraping)
 this is useful because in some cases, for example on the youtube homepage, the path could be extremely long:
 ['grid-disabled', 2, 0, 18, 0, 6, 0, 6, 0, 6, 0, 6, 0, 6, 1, 3, 6, 1, 3, 3, 0, 4, 2, 0, 2, 0, 0, 0, 0]
