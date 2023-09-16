@@ -11,6 +11,9 @@ function getElement(path) {
 	}
 	if (path.length > 1) {
 		for (i; i < path.length; i++) {
+			if(element.childNodes.length == 0){
+				return;
+			}
 			element = element.childNodes[path[i]];
 		}
 	}
@@ -109,4 +112,8 @@ function getPath(id = 'get') {
 		}
 	}
 	return path.reverse();
+}
+
+async function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
 }
