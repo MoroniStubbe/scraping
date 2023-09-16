@@ -6,14 +6,14 @@ function getElement(path) {
 		element = document.getElementById(path[i]);
 		if (!element) {
 			element = document.getElementsByClassName(path[i])[0];
+			if(!element){
+				return;
+			}
 		}
 		i++;
 	}
 	if (path.length > 1) {
 		for (i; i < path.length; i++) {
-			if(element.childNodes.length == 0){
-				return;
-			}
 			element = element.childNodes[path[i]];
 		}
 	}
