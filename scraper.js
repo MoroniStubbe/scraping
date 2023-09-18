@@ -130,3 +130,7 @@ function bindToButton(func, pathToParent, name = ''){
 	button.onclick = func;
 	parent.append(button);
 }
+
+function removeIdGet(){
+	getElement(getPath()).removeAttribute('id');
+}
