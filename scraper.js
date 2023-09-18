@@ -131,6 +131,9 @@ function bindToButton(func, pathToParent, name = ''){
 	parent.append(button);
 }
 
-function removeIdGet(){
-	getElement(getPath()).removeAttribute('id');
+function removeGet(){
+	let path = getPath();
+	if(path.length > 0){
+		getElement(path).removeAttribute('id');
+	}
 }
