@@ -117,3 +117,16 @@ function getPath(id = 'get') {
 async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function bindToButton(func, pathToParent, name = ''){
+	let parent = getElement(pathToParent);
+	let button = document.createElement('button');
+	if(name){
+		button.innerText = name;
+	}
+	else{
+		button.innerText = func.name;
+	}
+	button.onclick = func;
+	parent.append(button);
+}
