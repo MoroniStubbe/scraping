@@ -1,3 +1,15 @@
+function traverseChildNodes(element, callback, args) {
+	let result = callback(element, args)
+	if(result)
+	{
+		return result;
+	}
+	for (let i = 0; i < element.childNodes.length; i++) {
+		let child = element.childNodes[i];
+		traverseChildNodes(child, callback, args);
+	}
+}
+
 //path = [id or class or index, index1, index2, ...]
 function getElement(path) {
 	let i = 0
@@ -6,7 +18,7 @@ function getElement(path) {
 		element = document.getElementById(path[i]);
 		if (!element) {
 			element = document.getElementsByClassName(path[i])[0];
-			if(!element){
+			if (!element) {
 				return;
 			}
 		}
@@ -14,7 +26,17 @@ function getElement(path) {
 	}
 	if (path.length > 1) {
 		for (i; i < path.length; i++) {
-			element = element.childNodes[path[i]];
+			if(typeof path[i] == 'string'){
+				function getElementContainingString(element, string){
+					if(element.innerText && element.innerText.includes(string)){
+						return element;
+					}
+				}
+				traverseChildNodes(element, getElementContainingString, path[i]);
+			}
+			else{
+				element = element.childNodes[path[i]];
+			}
 		}
 	}
 	return element;
@@ -118,22 +140,22 @@ async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function bindToButton(func, pathToParent, name = ''){
+function bindToButton(func, pathToParent, name = '') {
 	let parent = getElement(pathToParent);
 	let button = document.createElement('button');
-	if(name){
+	if (name) {
 		button.innerText = name;
 	}
-	else{
+	else {
 		button.innerText = func.name;
 	}
 	button.onclick = func;
 	parent.append(button);
 }
 
-function removeGet(){
+function removeGet() {
 	let path = getPath();
-	if(path.length > 0){
+	if (path.length > 0) {
 		getElement(path).removeAttribute('id');
 	}
 }
