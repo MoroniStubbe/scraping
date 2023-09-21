@@ -1,12 +1,15 @@
-function traverseChildNodes(element, callback, args) {
+function traverseChildNodes(element, callback, args, firstInstance = true, resultStack = []) {
 	let result = callback(element, args)
 	if(result)
 	{
-		return result;
+		resultStack.push(result);
 	}
 	for (let i = 0; i < element.childNodes.length; i++) {
 		let child = element.childNodes[i];
-		traverseChildNodes(child, callback, args);
+		traverseChildNodes(child, callback, args, false, resultStack);
+	}
+	if(firstInstance){
+		return resultStack;
 	}
 }
 
