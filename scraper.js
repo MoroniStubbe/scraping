@@ -29,13 +29,19 @@ function getElement(path) {
 	}
 	if (path.length > 1) {
 		for (i; i < path.length; i++) {
+			//returns array of elements because multiple elements could contain the string
 			if(typeof path[i] == 'string'){
 				function getElementContainingString(element, string){
-					if(element.innerText && element.innerText.includes(string)){
-						return element;
+					for(let i2 = 0; i2 < element.childNodes.length; i2++){
+						let childNode = element.childNodes[i2];
+						if(childNode.nodeType === Node.TEXT_NODE){
+							if(childNode.nodeValue.includes(string)){
+								return element;
+							}
+						}
 					}
 				}
-				traverseChildNodes(element, getElementContainingString, path[i]);
+				return traverseChildNodes(element, getElementContainingString, path[i]);
 			}
 			else{
 				element = element.childNodes[path[i]];
