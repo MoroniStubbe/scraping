@@ -1,12 +1,12 @@
-function traverseChildNodes(element, callback, args, firstInstance = true, resultStack = []) {
+function traverseChildren(element, callback, args, firstInstance = true, resultStack = []) {
 	let result = callback(element, args)
 	if(result)
 	{
 		resultStack.push(result);
 	}
-	for (let i = 0; i < element.childNodes.length; i++) {
-		let child = element.childNodes[i];
-		traverseChildNodes(child, callback, args, false, resultStack);
+	let children = element.children;
+	for (let i = 0; i < children.length; i++) {
+		traverseChildren(children[i], callback, args, false, resultStack);
 	}
 	if(firstInstance){
 		return resultStack;
@@ -20,10 +20,7 @@ function getElement(path) {
 	if (typeof path[i] == 'string') {
 		element = document.getElementById(path[i]);
 		if (!element) {
-			element = document.getElementsByClassName(path[i])[0];
-			if (!element) {
-				return;
-			}
+			return;
 		}
 		i++;
 	}
@@ -41,29 +38,14 @@ function getElement(path) {
 						}
 					}
 				}
-				return traverseChildNodes(element, getElementContainingString, path[i]);
+				return traverseChildren(element, getElementContainingString, path[i]);
 			}
 			else{
-				element = element.childNodes[path[i]];
+				element = element.children[path[i]];
 			}
 		}
 	}
 	return element;
-}
-
-function getUniqueClasses() {
-	const elementsWithClasses = document.querySelectorAll("[class]");
-	const classOccurrences = {};
-	elementsWithClasses.forEach((element) => {
-		const classes = element.getAttribute("class").split(" ");
-		classes.forEach((className) => {
-			classOccurrences[className] = (classOccurrences[className] || 0) + 1;
-		});
-	});
-	const uniqueClasses = Object.keys(classOccurrences).filter(
-		(className) => classOccurrences[className] === 1
-	);
-	return uniqueClasses;
 }
 
 function getDuplicates(arr) {
@@ -100,11 +82,11 @@ function getDuplicateIds() {
 }
 
 
-//gets an element's index within its parent childNodes
+//gets an element's index within its parent children
 function getElementIndex(element) {
-	let childNodes = element.parentElement.childNodes;
-	for (let i = 0; i < childNodes.length; i++) {
-		if (element == childNodes[i]) {
+	let children = element.parentElement.children;
+	for (let i = 0; i < children.length; i++) {
+		if (element == children[i]) {
 			return i;
 		}
 	}
@@ -116,22 +98,8 @@ function getPath(id = 'get') {
 		return [];
 	}
 	let path = [];
-	const uniqueClasses = getUniqueClasses();
 	const duplicateIds = getDuplicateIds();
-	let done = false;
-	while (!done) {
-		if (element.classList.length > 0) {
-			for (let i = 0; i < element.classList.length; i++) {
-				if (uniqueClasses.includes(element.classList[i])) {
-					path.push(element.classList[i]);
-					done = true;
-					break;
-				}
-			}
-		}
-		if (done) {
-			break;
-		}
+	while (true) {
 		path.push(getElementIndex(element));
 		element = element.parentElement;
 		if (element.id && !duplicateIds.includes(element.id)) {
