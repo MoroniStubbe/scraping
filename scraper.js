@@ -117,13 +117,12 @@ async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function bindToButton(func, pathToParent, name = '') {
-	let parent = getElement(pathToParent);
+function bindToButton(func, parent, name = ''){
 	let button = document.createElement('button');
-	if (name) {
+	if(name){
 		button.innerText = name;
 	}
-	else {
+	else{
 		button.innerText = func.name;
 	}
 	button.onclick = func;
